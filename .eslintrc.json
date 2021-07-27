@@ -12,8 +12,9 @@
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint", "prettier"
     ],
     "rules": {
+        "linebreak-style": 0
     }
 }
