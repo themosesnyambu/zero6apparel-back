@@ -4,6 +4,7 @@ import express, {
   Request,
   Response,
 } from 'express';
+import mongoose from 'mongoose';
 import cors from 'cors';
 import errorhandler from 'errorhandler';
 import morgan from 'morgan';
@@ -37,6 +38,16 @@ if (!isProduction) {
 }
 
 app.use('/api', routes);
+
+mongoose.connect('mongodb://localhost:27017/zero6', {
+  useCreateIndex: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+
+}, () => {
+  // eslint-disable-next-line no-console
+  console.log('connected to database');
+});
 
 // / catch 404 and forward to error handler
 app.use((req: Request, res: Response, next:NextFunction) => {
