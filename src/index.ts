@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express, {
   Express,
   NextFunction,
@@ -11,11 +12,8 @@ import morgan from 'morgan';
 import methodOverride from 'method-override';
 import bodyParser from 'body-parser';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import env from './config/env-config';
 import routes from './routes';
-
-dotenv.config();
 
 const isProduction = env.NODE_ENV === 'production';
 
@@ -39,7 +37,7 @@ if (!isProduction) {
 
 app.use('/api', routes);
 
-mongoose.connect('mongodb://localhost:27017/zero6', {
+mongoose.connect(process.env.DB_URI!, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
