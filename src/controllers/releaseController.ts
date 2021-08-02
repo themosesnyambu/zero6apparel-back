@@ -7,7 +7,7 @@ const ReleaseModel = getModelForClass(Release);
 export default class ReleaseController {
   static async addNewRelease(req: Request, res: Response) {
     const {
-      name, price, description, color, photos, revies,
+      name, price, description, color, photos, reviews,
     } = req.body;
     await ReleaseModel.create({
       name,
@@ -15,7 +15,7 @@ export default class ReleaseController {
       description,
       color,
       photos,
-      revies,
+      reviews,
     });
     return res.sendStatus(201);
   }

@@ -1,20 +1,14 @@
 import { Router, Request, Response } from 'express';
 import { getModelForClass } from '@typegoose/typegoose';
 import { User } from '../models/user';
+import AuthController from '../controllers/authController';
 
+const { userSignup } = AuthController;
 const router = Router();
 
 const UserModel = getModelForClass(User);
 
-router.post('/', async (req: Request, res: Response) => {
-  const {
-    firstName, lastName, email, dateOfBirth, newsletter, password,
-  } = req.body;
-  await UserModel.create({
-    firstName, lastName, email, dateOfBirth, newsletter, password,
-  });
-  return res.status(201);
-});
+router.post('/', userSignup);
 
 router.get('/', [], async (req: Request, res: Response) => {
   const users = await UserModel.find({});

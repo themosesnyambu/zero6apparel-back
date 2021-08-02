@@ -12,7 +12,7 @@ router.post('/', addNewRelease);
 router.get('/', [], getReleases);
 router.get('/:id', [], getRelease);
 
-router.delete(':/id', deleteRelease);
+router.delete('/:id', deleteRelease);
 
 router.put('/:id', updateRelease);
 
