@@ -1,4 +1,5 @@
 import { prop } from '@typegoose/typegoose';
+// import mongoose from 'mongoose';
 
 class Release {
   @prop()
@@ -16,10 +17,13 @@ class Release {
   @prop()
   public color?: String;
 
-  @prop({ type: () => [String] })
+  @prop()
   public photos?: string[];
 
-  @prop({ type: () => [String] })
+  // @prop({ required: true, default: [] })
+  // public photos?: mongoose.Types.Array<string>;
+
+  @prop()
   public reviews?: string[];
 }
 

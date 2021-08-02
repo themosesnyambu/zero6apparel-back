@@ -1,39 +1,19 @@
-import { Router, Request, Response } from 'express';
-import { getModelForClass } from '@typegoose/typegoose';
-import { Release } from '../models/release';
+import { Router } from 'express';
+import ReleaseController from '../controllers/releaseController';
 
 const router = Router();
 
-const ReleaseModel = getModelForClass(Release);
+const {
+  addNewRelease, getReleases, getRelease, deleteRelease, updateRelease,
+} = ReleaseController;
 
-router.post('/', async (req: Request, res: Response) => {
-  const {
-    name, price, description, color, photos, revies,
-  } = req.body;
-  await ReleaseModel.create({
-    name, price, description, color, photos, revies,
-  });
-  return res.status(201);
-});
+router.post('/', addNewRelease);
 
-router.get('/', [], async (req: Request, res: Response) => {
-  const releases = await ReleaseModel.find({});
-  return res.status(200).send(releases);
-});
+router.get('/', [], getReleases);
+router.get('/:id', [], getRelease);
 
-router.get('/:id', [], async (req: Request, res: Response) => {
-  const release = await ReleaseModel.findById({ _id: req.params.id }).exec();
-  return res.status(200).send(release);
-});
+router.delete(':/id', deleteRelease);
 
-router.delete(':/id', async (req: Request, res: Response) => {
-  await ReleaseModel.findByIdAndRemove({ _id: req.params.id });
-  return res.status(200);
-});
-
-router.put('/:id', (req : Request, res : Response) => {
-  ReleaseModel.findByIdAndUpdate({ _id: req.params.id }, req.body);
-  return res.status(200);
-});
+router.put('/:id', updateRelease);
 
 export default router;
