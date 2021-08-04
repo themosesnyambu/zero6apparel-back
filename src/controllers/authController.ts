@@ -27,4 +27,21 @@ export default class AuthController {
     res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
     return res.status(201).send(user.email);
   }
+
+  /**
+   *  successfully logout a user
+   * @static
+   * @param {Request} req - The request from the endpoint.
+   * @param {Response} res - The response returned by the method.
+   * @returns { JSON } - A JSON object containing success or failure details.
+   * @memberof Auth
+   */
+  static logout(req:Request, res:Response) {
+    try {
+      res.clearCookie('token', { httpOnly: true });
+      return res.status(200);
+    } catch (error) {
+      return res.send(error);
+    }
+  }
 }
