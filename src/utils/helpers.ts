@@ -32,7 +32,12 @@ export default class Helpers {
  * @returns {string} JWT token.
  */
   static generateTokenAlive(payLoad: string | object) {
-    return jwt.sign(payLoad, SECRET!);
+    try {
+      return jwt.sign(payLoad, SECRET!);
+    // eslint-disable-next-line no-empty
+    } catch (error) {
+      return error;
+    }
   }
 
   /**

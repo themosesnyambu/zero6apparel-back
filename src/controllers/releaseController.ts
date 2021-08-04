@@ -1,42 +1,34 @@
 import { Request, Response } from 'express';
-import { getModelForClass } from '@typegoose/typegoose';
-import { Release } from '../models/release';
+import ReleaseService from '../services/releaseService';
 
-const ReleaseModel = getModelForClass(Release);
+const {
+  createRelease, getReleases, getRelease, deleteRelease, updateRelease,
+} = ReleaseService;
 
 export default class ReleaseController {
   static async addNewRelease(req: Request, res: Response) {
-    const {
-      name, price, description, color, photos, reviews,
-    } = req.body;
-    await ReleaseModel.create({
-      name,
-      price,
-      description,
-      color,
-      photos,
-      reviews,
-    });
+    const releaseData = req.body;
+    await createRelease(releaseData);
     return res.sendStatus(201);
   }
 
   static async getReleases(req: Request, res: Response) {
-    const releases = await ReleaseModel.find({});
+    const releases = getReleases();
     return res.status(200).send(releases);
   }
 
   static async getRelease(req: Request, res: Response) {
-    const release = await ReleaseModel.findById({ _id: req.params.id }).exec();
+    const release = getRelease(req.params.id);
     return res.status(200).send(release);
   }
 
   static async deleteRelease(req: Request, res: Response) {
-    await ReleaseModel.findByIdAndRemove({ _id: req.params.id });
+    deleteRelease(req.params.id);
     return res.status(200);
   }
 
   static async updateRelease(req: Request, res: Response) {
-    ReleaseModel.findByIdAndUpdate({ _id: req.params.id }, req.body);
+    updateRelease(req.params.id, req.body);
     return res.status(200);
   }
 }
