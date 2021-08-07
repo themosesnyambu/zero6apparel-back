@@ -25,6 +25,9 @@ class Release {
 
   @prop()
   public reviews?: string[];
+
+  @prop()
+  public tags?: string[];
 }
 
 // eslint-disable-next-line import/prefer-default-export

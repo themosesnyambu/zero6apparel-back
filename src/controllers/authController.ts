@@ -7,8 +7,8 @@ import Helpers from '../utils/helpers';
    * @class AuthController
 */
 
-const { createUser } = UserService;
-const { generateToken } = Helpers;
+const { createUser, findUser } = UserService;
+const { generateToken, comparePassword } = Helpers;
 
 export default class AuthController {
   /**
@@ -23,9 +23,32 @@ export default class AuthController {
   static async userSignup(req : Request, res: Response) {
     const { body } = req;
     const user = await createUser({ ...body });
-    const token = generateToken({ email: user.email, id: user.id });
+    const token = generateToken({ email: user.email, id: user.id, role: user.role });
     res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-    return res.status(201).send(user.email);
+    return res.status(201).send(user);
+  }
+
+  /**
+     * Logs in a user.
+     *
+     * @static
+     * @param {Request} req - The request from the endpoint.
+     * @param {Response} res - The response returned by the method.
+     * @returns { JSON } A JSON response with the logged in user's details and a JWT.
+     * @memberof Auth
+     */
+  static async userLogin(req: Request, res: Response) {
+    const { email, password } = req.body;
+    const user = await findUser(email);
+    if (!user) {
+      return res.status(401);
+    }
+    if (!comparePassword(password, user.password!)) {
+      return res.status(401);
+    }
+    const token = generateToken({ email: user.email, id: user.id, role: user.role });
+    res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
+    return res.status(200).send(user);
   }
 
   /**

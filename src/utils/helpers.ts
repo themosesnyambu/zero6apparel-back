@@ -34,7 +34,6 @@ export default class Helpers {
   static generateTokenAlive(payLoad: string | object) {
     try {
       return jwt.sign(payLoad, SECRET!);
-    // eslint-disable-next-line no-empty
     } catch (error) {
       return error;
     }

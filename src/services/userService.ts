@@ -29,4 +29,9 @@ export default class UserService {
   static async updateUser(id: String, updateBody: object) {
     UserModel.findByIdAndUpdate({ _id: id }, updateBody);
   }
+
+  static async findUser(email: String) {
+    const dbUser = UserModel.findOne({ email });
+    return dbUser;
+  }
 }
