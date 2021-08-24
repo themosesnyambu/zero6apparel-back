@@ -2,6 +2,9 @@ import { Router, Request, Response } from 'express';
 import { getModelForClass } from '@typegoose/typegoose';
 import { User } from '../models/user';
 import AuthController from '../controllers/authController';
+// import AuthMiddleware from '../middlewares/authMiddleware';
+
+// const { authenticate } = AuthMiddleware;
 
 const { userSignup } = AuthController;
 const router = Router();

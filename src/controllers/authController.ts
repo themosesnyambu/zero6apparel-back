@@ -8,7 +8,9 @@ import Helpers from '../utils/helpers';
 */
 
 const { createUser, findUser } = UserService;
-const { generateToken, comparePassword } = Helpers;
+const {
+  generateToken, comparePassword, successResponse, extractUserData,
+} = Helpers;
 
 export default class AuthController {
   /**
@@ -22,10 +24,11 @@ export default class AuthController {
      */
   static async userSignup(req : Request, res: Response) {
     const { body } = req;
-    const user = await createUser({ ...body });
-    const token = generateToken({ email: user.email, id: user.id, role: user.role });
+    const nuser = await createUser({ ...body });
+    const token = generateToken({ email: nuser.email, id: nuser.id, role: nuser.role });
+    const user = extractUserData(nuser);
     res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-    return res.status(201).send(user);
+    return successResponse(res, { ...user }, 201);
   }
 
   /**
@@ -46,9 +49,11 @@ export default class AuthController {
     if (!comparePassword(password, user.password!)) {
       return res.status(401);
     }
+
     const token = generateToken({ email: user.email, id: user.id, role: user.role });
+    const loginResponse = extractUserData(user);
     res.cookie('token', token, { maxAge: 86400000, httpOnly: true });
-    return res.status(200).send(user);
+    return res.status(200).send({ ...loginResponse, token });
   }
 
   /**

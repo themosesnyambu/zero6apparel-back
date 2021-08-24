@@ -12,7 +12,7 @@ class Release {
   public description?: String;
 
   @prop()
-  public style?: String;
+  public collectionStyle?: String;
 
   @prop()
   public color?: String;

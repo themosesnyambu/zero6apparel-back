@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { Response } from 'express';
+import { Response, Request } from 'express';
 import bcrypt from 'bcryptjs';
 import env from '../config/env-config';
 
@@ -95,6 +95,25 @@ export default class Helpers {
   }
 
   /**
+ * Checks token from request header for user authentication
+ * @param {object} req - The request from the endpoint
+ * @memberof Helpers
+ * @returns {Token} Token
+ */
+  static checkToken(req: Request) {
+    const {
+      headers: { authorization },
+      cookies: { token: cookieToken },
+    } = req;
+    let bearerToken = null;
+    if (authorization) {
+      bearerToken = authorization.split(' ')[1]
+        ? authorization.split(' ')[1] : authorization;
+    }
+    return cookieToken || bearerToken || req.headers['x-access-token'] || req.headers.token || req.body.token;
+  }
+
+  /**
  * Generates a JSON response for success scenarios.
  * @static
  * @param {Response} res - Response object.
@@ -128,5 +147,25 @@ export default class Helpers {
         message,
       },
     });
+  }
+
+  /**
+ * Extracts a new user object from the one supplied
+ * @static
+ * @param {object} user - The user data from which a new user object will be extracted.
+ * @memberof Helpers
+ * @returns { object } - The new extracted user object.
+ */
+  static extractUserData(user:any) {
+    return {
+      id: user.id,
+      token: user.token,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      gender: user.gender,
+      bithdate: user.birthdate,
+      role: user.role,
+    };
   }
 }

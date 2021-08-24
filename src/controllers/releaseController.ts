@@ -13,17 +13,17 @@ export default class ReleaseController {
   }
 
   static async getReleases(req: Request, res: Response) {
-    const releases = getReleases();
+    const releases = await getReleases();
     return res.status(200).send(releases);
   }
 
   static async getRelease(req: Request, res: Response) {
-    const release = getRelease(req.params.id);
+    const release = await getRelease(req.params.id);
     return res.status(200).send(release);
   }
 
   static async deleteRelease(req: Request, res: Response) {
-    deleteRelease(req.params.id);
+    await deleteRelease(req.params.id);
     return res.status(200);
   }
 

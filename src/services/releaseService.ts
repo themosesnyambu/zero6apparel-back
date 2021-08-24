@@ -5,19 +5,25 @@ const ReleaseModel = getModelForClass(Release);
 
 export default class ReleaseService {
   static async createRelease(releaseData: any) {
-    await ReleaseModel.create({ ...releaseData });
+    const newRelease = await ReleaseModel.create({ ...releaseData });
+    return newRelease;
   }
 
   static async getReleases() {
-    return ReleaseModel.find({});
+    return ReleaseModel.find();
   }
 
   static async getRelease(id: String) {
-    return ReleaseModel.findById({ _id: id }).exec();
+    return ReleaseModel.findById({ _id: id }, (err, docs) => {
+      if (err) {
+        return err;
+      }
+      return docs;
+    });
   }
 
   static async deleteRelease(id: String) {
-    await ReleaseModel.findByIdAndRemove({ _id: id });
+    return ReleaseModel.deleteOne({ _id: id });
   }
 
   static async updateRelease(id: String, updateBody: object) {
