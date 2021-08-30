@@ -2,11 +2,14 @@ import { Router, Request, Response } from 'express';
 import { getModelForClass } from '@typegoose/typegoose';
 import { User } from '../models/user';
 import AuthController from '../controllers/authController';
-// import AuthMiddleware from '../middlewares/authMiddleware';
+import UserController from '../controllers/userController';
 
-// const { authenticate } = AuthMiddleware;
+import AuthMiddleware from '../middlewares/authMiddleware';
 
 const { userSignup } = AuthController;
+const { userProfile } = UserController;
+const { isAuthenticated } = AuthMiddleware;
+
 const router = Router();
 
 const UserModel = getModelForClass(User);
@@ -32,5 +35,7 @@ router.put('/:id', (req : Request, res : Response) => {
   UserModel.findByIdAndUpdate({ _id: req.params.id }, req.body);
   return res.status(200);
 });
+
+router.get('/profile/:userId', isAuthenticated, userProfile);
 
 export default router;
