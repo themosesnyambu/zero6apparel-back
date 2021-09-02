@@ -19,7 +19,8 @@ export default class UserService {
   }
 
   static async getUser(id: String) {
-    return UserModel.findById({ _id: id }).exec();
+    const dbUser = UserModel.findOne({ id });
+    return dbUser;
   }
 
   static async deleteUser(id: String) {

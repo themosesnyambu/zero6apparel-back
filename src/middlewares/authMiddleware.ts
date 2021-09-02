@@ -21,6 +21,7 @@ export default class AuthMiddleware {
     try {
       const { userId } = req.params;
       const token = checkToken(req);
+      // console.log(checkToken(req));
       const decoded = verifyToken(token);
       req.user = decoded;
       let id;
